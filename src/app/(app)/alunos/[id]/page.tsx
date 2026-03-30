@@ -35,11 +35,11 @@ function InfoRow({
 }) {
   if (!value) return null;
   return (
-    <div className="flex items-start gap-3 py-2">
-      <Icon className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+    <div className="flex items-start gap-3 py-3">
+      <Icon className="h-5 w-5 mt-0.5 text-muted-foreground shrink-0" />
       <div>
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="text-sm">{value}</p>
+        <p className="text-xs text-muted-foreground font-medium">{label}</p>
+        <p className="text-base">{value}</p>
       </div>
     </div>
   );
@@ -87,15 +87,15 @@ export default function StudentDetailPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen pb-20">
-      <header className="sticky top-0 z-40 bg-teal-700 text-white px-4 py-4 shadow-md">
+    <div className="flex flex-col min-h-screen pb-24">
+      <header className="sticky top-0 z-40 bg-teal-700 text-white px-5 py-5 shadow-md">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="p-1 -ml-1">
-            <ArrowLeft className="h-5 w-5" />
+          <button onClick={() => router.back()} className="p-2 -ml-2">
+            <ArrowLeft className="h-6 w-6" />
           </button>
           <div className="flex-1 min-w-0">
-            <h1 className="text-base font-bold truncate">{student.name}</h1>
-            <p className="text-xs text-teal-100 truncate">
+            <h1 className="text-lg font-bold truncate">{student.name}</h1>
+            <p className="text-sm text-teal-100 truncate">
               {student.course} — Turma {student.batch}
             </p>
           </div>
@@ -113,10 +113,10 @@ export default function StudentDetailPage() {
         </div>
       </header>
 
-      <main className="flex-1 px-4 py-4 max-w-lg mx-auto w-full space-y-4">
+      <main className="flex-1 px-5 py-5 max-w-lg mx-auto w-full space-y-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Dados do Aluno</CardTitle>
+            <CardTitle className="text-base">Dados do Aluno</CardTitle>
           </CardHeader>
           <CardContent className="space-y-0 divide-y">
             <InfoRow icon={User} label="Nome" value={student.name} />
@@ -138,11 +138,11 @@ export default function StudentDetailPage() {
         {visit ? (
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <ClipboardList className="h-4 w-4 text-teal-700" />
+              <CardTitle className="text-base flex items-center gap-2">
+                <ClipboardList className="h-5 w-5 text-teal-700" />
                 Respostas da Visita
               </CardTitle>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Realizada em{" "}
                 {new Date(visit.visited_at).toLocaleDateString("pt-BR", {
                   day: "2-digit",
@@ -180,8 +180,8 @@ export default function StudentDetailPage() {
           </Card>
         ) : (
           <Link href={`/alunos/${student.id}/visita`}>
-            <Button className="w-full bg-teal-700 hover:bg-teal-800" size="lg">
-              <ClipboardList className="mr-2 h-5 w-5" />
+            <Button className="w-full bg-teal-700 hover:bg-teal-800 text-base h-14" size="lg">
+              <ClipboardList className="mr-2 h-6 w-6" />
               Iniciar Visita
             </Button>
           </Link>
@@ -193,8 +193,8 @@ export default function StudentDetailPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="outline" className="w-full" size="lg">
-              <Phone className="mr-2 h-4 w-4" />
+            <Button variant="outline" className="w-full text-base h-14" size="lg">
+              <Phone className="mr-2 h-5 w-5" />
               Abrir WhatsApp
             </Button>
           </a>
@@ -216,8 +216,8 @@ function AnswerItem({
   if (!value) return null;
   return (
     <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm">{value}</p>
+      <p className="text-xs text-muted-foreground font-medium">{label}</p>
+      <p className="text-base">{value}</p>
     </div>
   );
 }

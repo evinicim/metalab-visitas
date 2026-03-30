@@ -81,40 +81,40 @@ function AlunosContent() {
   const visitados = filtered.filter((s) => !!s.visit);
 
   return (
-    <div className="flex flex-col min-h-screen pb-20">
-      <header className="sticky top-0 z-40 bg-teal-700 text-white px-4 py-4 shadow-md">
-        <h1 className="text-lg font-bold">Alunos Concluídos</h1>
+    <div className="flex flex-col min-h-screen pb-24">
+      <header className="sticky top-0 z-40 bg-teal-700 text-white px-5 py-5 shadow-md">
+        <h1 className="text-xl font-bold">Alunos Concluídos</h1>
       </header>
 
       <main className="flex-1 px-4 py-4 max-w-lg mx-auto w-full space-y-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             placeholder="Buscar por nome, bairro ou curso..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
+            className="pl-10 h-12 text-base"
           />
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
+            <Loader2 className="h-10 w-10 animate-spin text-teal-700" />
           </div>
         ) : (
           <Tabs defaultValue={initialTab}>
-            <TabsList className="w-full">
-              <TabsTrigger value="pendentes" className="flex-1">
+            <TabsList className="w-full h-12">
+              <TabsTrigger value="pendentes" className="flex-1 text-sm font-semibold">
                 Pendentes ({pendentes.length})
               </TabsTrigger>
-              <TabsTrigger value="visitados" className="flex-1">
+              <TabsTrigger value="visitados" className="flex-1 text-sm font-semibold">
                 Visitados ({visitados.length})
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="pendentes" className="space-y-2 mt-3">
+            <TabsContent value="pendentes" className="space-y-3 mt-3">
               {pendentes.length === 0 ? (
-                <p className="text-center text-sm text-muted-foreground py-10">
+                <p className="text-center text-base text-muted-foreground py-10">
                   {search
                     ? "Nenhum aluno pendente encontrado."
                     : "Todos os alunos foram visitados!"}
@@ -124,9 +124,9 @@ function AlunosContent() {
               )}
             </TabsContent>
 
-            <TabsContent value="visitados" className="space-y-2 mt-3">
+            <TabsContent value="visitados" className="space-y-3 mt-3">
               {visitados.length === 0 ? (
-                <p className="text-center text-sm text-muted-foreground py-10">
+                <p className="text-center text-base text-muted-foreground py-10">
                   {search
                     ? "Nenhum aluno visitado encontrado."
                     : "Nenhuma visita realizada ainda."}

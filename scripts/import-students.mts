@@ -129,17 +129,27 @@ async function main() {
   console.log(`Alunos concluídos: ${concluidos.length}`);
   console.log(`Total de alunos (todos status): ${students.length}`);
 
-  // Deduplica por CPF (mantém o mais recente / última batch)
+  // Deduplica por CPF — prioriza CONCLUÍDO sobre DESISTENTE,
+  // e em caso de empate de status, mantém a batch mais recente
   const seen = new Map<string, (typeof students)[0]>();
   for (const s of students) {
     const key = s.cpf || s.name;
     const existing = seen.get(key);
-    if (!existing || s.batch > existing.batch) {
+    if (!existing) {
       seen.set(key, s);
+    } else {
+      const existIsConcluido = existing.status === "CONCLUÍDO";
+      const newIsConcluido = s.status === "CONCLUÍDO";
+      if (newIsConcluido && !existIsConcluido) {
+        seen.set(key, s);
+      } else if (newIsConcluido === existIsConcluido && s.batch > existing.batch) {
+        seen.set(key, s);
+      }
     }
   }
   const deduped = Array.from(seen.values());
-  console.log(`Após deduplicação por CPF: ${deduped.length}`);
+  const dedupConcluidos = deduped.filter((s) => s.status === "CONCLUÍDO");
+  console.log(`Após deduplicação por CPF: ${deduped.length} (${dedupConcluidos.length} concluídos)`);
 
   // Limpa tabela existente e insere novos dados
   console.log("Limpando tabela students...");

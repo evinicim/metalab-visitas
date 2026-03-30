@@ -38,19 +38,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-teal-700 via-teal-800 to-teal-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-teal-700 via-teal-800 to-teal-950 px-5">
       <Card className="w-full max-w-sm border-0 shadow-2xl">
         <CardHeader className="items-center gap-1 pb-2">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-700 text-white text-2xl font-bold shadow-lg">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-teal-700 text-white text-3xl font-bold shadow-lg">
             ML
           </div>
-          <h1 className="text-xl font-bold tracking-tight mt-3">MetaLAB Visitas</h1>
-          <p className="text-sm text-muted-foreground">Águas Emendadas</p>
+          <h1 className="text-2xl font-bold tracking-tight mt-4">MetaLAB Visitas</h1>
+          <p className="text-base text-muted-foreground">Águas Emendadas</p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
+              <Label htmlFor="email" className="text-base">E-mail</Label>
               <Input
                 id="email"
                 type="email"
@@ -59,10 +59,11 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                className="h-12 text-base"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password" className="text-base">Senha</Label>
               <Input
                 id="password"
                 type="password"
@@ -71,15 +72,16 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
+                className="h-12 text-base"
               />
             </div>
             {error && (
-              <p className="text-sm text-destructive font-medium">{error}</p>
+              <p className="text-base text-destructive font-medium">{error}</p>
             )}
-            <Button type="submit" className="w-full bg-teal-700 hover:bg-teal-800" disabled={loading}>
+            <Button type="submit" className="w-full bg-teal-700 hover:bg-teal-800 text-base h-14" disabled={loading}>
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Entrando...
                 </>
               ) : (

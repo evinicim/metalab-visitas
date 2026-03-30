@@ -122,10 +122,10 @@ export default function VisitaPage() {
 
   if (saved) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-4">
-        <CheckCircle2 className="h-16 w-16 text-teal-700" />
-        <h2 className="text-xl font-bold">Visita Registrada!</h2>
-        <p className="text-sm text-muted-foreground text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6">
+        <CheckCircle2 className="h-20 w-20 text-teal-700" />
+        <h2 className="text-2xl font-bold">Visita Registrada!</h2>
+        <p className="text-base text-muted-foreground text-center">
           A pesquisa de {student?.name} foi salva com sucesso.
         </p>
       </div>
@@ -134,23 +134,23 @@ export default function VisitaPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-40 bg-teal-700 text-white px-4 py-4 shadow-md">
+      <header className="sticky top-0 z-40 bg-teal-700 text-white px-5 py-5 shadow-md">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="p-1 -ml-1">
-            <ArrowLeft className="h-5 w-5" />
+          <button onClick={() => router.back()} className="p-2 -ml-2">
+            <ArrowLeft className="h-6 w-6" />
           </button>
           <div className="flex-1 min-w-0">
-            <h1 className="text-base font-bold truncate">Pesquisa de Visita</h1>
-            <p className="text-xs text-teal-100 truncate">{student?.name}</p>
+            <h1 className="text-lg font-bold truncate">Pesquisa de Visita</h1>
+            <p className="text-sm text-teal-100 truncate">{student?.name}</p>
           </div>
         </div>
       </header>
 
-      <form onSubmit={handleSubmit} className="flex-1 px-4 py-4 max-w-lg mx-auto w-full space-y-4 pb-8">
+      <form onSubmit={handleSubmit} className="flex-1 px-5 py-5 max-w-lg mx-auto w-full space-y-5 pb-10">
         {/* Seção 2 — Situação Atual */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-teal-700">
+            <CardTitle className="text-base text-teal-700">
               2. Situação Atual
             </CardTitle>
           </CardHeader>
@@ -192,7 +192,7 @@ export default function VisitaPage() {
         {/* Seção 3 — Continuidade de Estudos */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-teal-700">
+            <CardTitle className="text-base text-teal-700">
               3. Continuidade de Estudos
             </CardTitle>
           </CardHeader>
@@ -209,13 +209,14 @@ export default function VisitaPage() {
             />
             <Separator />
             <div className="space-y-2">
-              <Label className="text-sm font-medium">
+              <Label className="text-base font-semibold">
                 3.2 Se sim, qual área?
               </Label>
               <Input
                 placeholder="Ex: Design gráfico, Marketing digital..."
                 value={areaCurso}
                 onChange={(e) => setAreaCurso(e.target.value)}
+                className="h-12 text-base"
               />
             </div>
           </CardContent>
@@ -224,7 +225,7 @@ export default function VisitaPage() {
         {/* Seção 4 — Impacto */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-teal-700">
+            <CardTitle className="text-base text-teal-700">
               4. Impacto Pessoal e Profissional
             </CardTitle>
           </CardHeader>
@@ -237,32 +238,32 @@ export default function VisitaPage() {
             />
             <Separator />
             <div className="space-y-2">
-              <Label className="text-sm font-medium">
+              <Label className="text-base font-semibold">
                 4.2 Quais foram as principais melhorias trazidas pelo curso?
               </Label>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Selecione uma ou mais opções
               </p>
               <div className="space-y-2">
                 {MELHORIAS_OPTIONS.map((opt) => (
                   <label
                     key={opt}
-                    className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    className="flex items-center gap-3 rounded-lg border p-4 cursor-pointer hover:bg-muted/50 transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={melhorias.includes(opt)}
                       onChange={() => toggleMelhoria(opt)}
-                      className="h-4 w-4 rounded border-input text-teal-700 focus:ring-teal-700"
+                      className="h-5 w-5 rounded border-input text-teal-700 focus:ring-teal-700"
                     />
-                    <span className="text-sm">{opt}</span>
+                    <span className="text-base">{opt}</span>
                   </label>
                 ))}
               </div>
             </div>
             <Separator />
             <div className="space-y-2">
-              <Label className="text-sm font-medium">
+              <Label className="text-base font-semibold">
                 4.3 Em uma frase, qual foi a maior transformação que você teve
                 após o curso?
               </Label>
@@ -270,6 +271,7 @@ export default function VisitaPage() {
                 placeholder="Ex: Mais autoconfiança, Mudança profissional..."
                 value={transformacao}
                 onChange={(e) => setTransformacao(e.target.value)}
+                className="h-12 text-base"
               />
             </div>
           </CardContent>
@@ -278,7 +280,7 @@ export default function VisitaPage() {
         {/* Seção 6 — Perfil Socioeconômico */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-teal-700">
+            <CardTitle className="text-base text-teal-700">
               6. Perfil Socioeconômico (opcional)
             </CardTitle>
           </CardHeader>
@@ -314,7 +316,7 @@ export default function VisitaPage() {
         {/* Observações */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-teal-700">Observações</CardTitle>
+            <CardTitle className="text-base text-teal-700">Observações</CardTitle>
           </CardHeader>
           <CardContent>
             <Textarea
@@ -322,24 +324,25 @@ export default function VisitaPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
+              className="text-base"
             />
           </CardContent>
         </Card>
 
         <Button
           type="submit"
-          className="w-full bg-teal-700 hover:bg-teal-800"
+          className="w-full bg-teal-700 hover:bg-teal-800 text-lg h-16"
           size="lg"
           disabled={saving}
         >
           {saving ? (
             <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
               Salvando...
             </>
           ) : (
             <>
-              <Save className="mr-2 h-5 w-5" />
+              <Save className="mr-2 h-6 w-6" />
               Salvar Visita
             </>
           )}
@@ -362,15 +365,15 @@ function RadioQuestion({
 }) {
   return (
     <div className="space-y-3">
-      <Label className="text-sm font-medium">{label}</Label>
+      <Label className="text-base font-semibold">{label}</Label>
       <RadioGroup value={value} onValueChange={onChange} className="space-y-2">
         {options.map((opt) => (
           <label
             key={opt}
-            className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-3 rounded-lg border p-4 cursor-pointer hover:bg-muted/50 transition-colors"
           >
-            <RadioGroupItem value={opt} />
-            <span className="text-sm">{opt}</span>
+            <RadioGroupItem value={opt} className="h-5 w-5" />
+            <span className="text-base">{opt}</span>
           </label>
         ))}
       </RadioGroup>
