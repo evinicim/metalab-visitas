@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MetaLAB Visitas - Águas Emendadas
 
-## Getting Started
+App mobile-first para gerenciar visitas domiciliares a alunos concluintes do projeto MetaLAB.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 15** (App Router) + TypeScript
+- **Tailwind CSS** + shadcn/ui
+- **Supabase** (PostgreSQL + Auth)
+- **Vercel** (deploy)
+
+## Setup
+
+### 1. Criar projeto no Supabase
+
+1. Acesse [supabase.com](https://supabase.com) e crie um projeto (free tier)
+2. Copie a **URL** e a **anon key** do projeto (Settings > API)
+3. Copie também a **service_role key** (para o script de importação)
+
+### 2. Criar as tabelas
+
+No painel do Supabase, vá em **SQL Editor** e execute o conteúdo do arquivo:
+
+```
+supabase/migrations/001_create_tables.sql
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Criar usuário(s)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+No painel do Supabase, vá em **Authentication > Users** e crie um usuário com e-mail e senha.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Configurar variáveis de ambiente
 
-## Learn More
+Crie um arquivo `.env.local` na raiz do projeto:
 
-To learn more about Next.js, take a look at the following resources:
+```
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Importar dados dos alunos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install -g tsx
 
-## Deploy on Vercel
+SUPABASE_URL=https://xxx.supabase.co \
+SUPABASE_SERVICE_KEY=eyJhbGci... \
+npx tsx scripts/import-students.mts
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O script baixa os dados da planilha Google Sheets pública e insere no banco.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 6. Rodar localmente
+
+```bash
+npm install
+npm run dev
+```
+
+Acesse `http://localhost:3000`
+
+### 7. Deploy no Vercel
+
+1. Push o código para um repositório Git (GitHub)
+2. Conecte o repositório no [Vercel](https://vercel.com)
+3. Configure as variáveis de ambiente:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy automático!
+
+## Estrutura
+
+```
+src/
+  app/
+    login/          - Tela de login
+    dashboard/      - Dashboard com estatísticas
+    alunos/         - Lista de alunos (abas pendentes/visitados)
+    alunos/[id]/    - Detalhe do aluno
+    alunos/[id]/visita/ - Formulário de pesquisa
+    auth/           - Callbacks de autenticação
+  components/
+    nav-bar.tsx     - Navegação mobile (bottom bar)
+    student-card.tsx - Card de aluno na lista
+    ui/             - Componentes shadcn/ui
+  lib/
+    supabase.ts     - Cliente Supabase (browser)
+    supabase-server.ts - Cliente Supabase (server)
+    types.ts        - Tipos TypeScript
+scripts/
+  import-students.mts - Importação de dados da planilha
+supabase/
+  migrations/       - SQL de criação das tabelas
+```
