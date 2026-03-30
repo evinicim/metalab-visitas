@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
+import { useAutoRefresh } from "@/lib/use-refresh";
 import { NavBar } from "@/components/nav-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,26 +20,26 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
-  useEffect(() => {
-    async function loadStats() {
-      const { count: total } = await supabase
-        .from("students")
-        .select("*", { count: "exact", head: true })
-        .ilike("status", "%CONCLU%");
+  const loadStats = useCallback(async () => {
+    const { count: total } = await supabase
+      .from("students")
+      .select("*", { count: "exact", head: true })
+      .ilike("status", "%CONCLU%");
 
-      const { count: visited } = await supabase
-        .from("visits")
-        .select("*", { count: "exact", head: true });
+    const { count: visited } = await supabase
+      .from("visits")
+      .select("*", { count: "exact", head: true });
 
-      setStats({
-        total: total || 0,
-        visited: visited || 0,
-        pending: (total || 0) - (visited || 0),
-      });
-      setLoading(false);
-    }
-    loadStats();
+    setStats({
+      total: total || 0,
+      visited: visited || 0,
+      pending: (total || 0) - (visited || 0),
+    });
+    setLoading(false);
   }, [supabase]);
+
+  useEffect(() => { loadStats(); }, [loadStats]);
+  useAutoRefresh(loadStats);
 
   const pct = stats && stats.total > 0
     ? Math.round((stats.visited / stats.total) * 100)

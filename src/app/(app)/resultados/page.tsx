@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase";
+import { useAutoRefresh } from "@/lib/use-refresh";
 import { NavBar } from "@/components/nav-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -125,21 +126,21 @@ export default function ResultadosPage() {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
-  useEffect(() => {
-    async function load() {
-      const [vRes, sRes] = await Promise.all([
-        supabase.from("visits").select("*"),
-        supabase
-          .from("students")
-          .select("*", { count: "exact", head: true })
-          .ilike("status", "%CONCLU%"),
-      ]);
-      setVisits(vRes.data || []);
-      setTotalStudents(sRes.count || 0);
-      setLoading(false);
-    }
-    load();
+  const load = useCallback(async () => {
+    const [vRes, sRes] = await Promise.all([
+      supabase.from("visits").select("*"),
+      supabase
+        .from("students")
+        .select("*", { count: "exact", head: true })
+        .ilike("status", "%CONCLU%"),
+    ]);
+    setVisits(vRes.data || []);
+    setTotalStudents(sRes.count || 0);
+    setLoading(false);
   }, [supabase]);
+
+  useEffect(() => { load(); }, [load]);
+  useAutoRefresh(load);
 
   if (loading) {
     return (

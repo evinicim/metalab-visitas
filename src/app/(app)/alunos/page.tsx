@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense, useEffect, useState, useMemo } from "react";
+import { Suspense, useEffect, useState, useMemo, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { useAutoRefresh } from "@/lib/use-refresh";
 import { NavBar } from "@/components/nav-bar";
 import { StudentCard } from "@/components/student-card";
 import { Input } from "@/components/ui/input";
@@ -34,22 +35,22 @@ function AlunosContent() {
   const [search, setSearch] = useState("");
   const supabase = createClient();
 
-  useEffect(() => {
-    async function load() {
-      const [studentsRes, visitsRes] = await Promise.all([
-        supabase
-          .from("students")
-          .select("*")
-          .ilike("status", "%CONCLU%")
-          .order("name"),
-        supabase.from("visits").select("*"),
-      ]);
-      setStudents(studentsRes.data || []);
-      setVisits(visitsRes.data || []);
-      setLoading(false);
-    }
-    load();
+  const load = useCallback(async () => {
+    const [studentsRes, visitsRes] = await Promise.all([
+      supabase
+        .from("students")
+        .select("*")
+        .ilike("status", "%CONCLU%")
+        .order("name"),
+      supabase.from("visits").select("*"),
+    ]);
+    setStudents(studentsRes.data || []);
+    setVisits(visitsRes.data || []);
+    setLoading(false);
   }, [supabase]);
+
+  useEffect(() => { load(); }, [load]);
+  useAutoRefresh(load);
 
   const visitMap = useMemo(() => {
     const map = new Map<number, Visit>();

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
+import { useAutoRefresh } from "@/lib/use-refresh";
 import { NavBar } from "@/components/nav-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,18 +55,18 @@ export default function StudentDetailPage() {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
-  useEffect(() => {
-    async function load() {
-      const [sRes, vRes] = await Promise.all([
-        supabase.from("students").select("*").eq("id", id).single(),
-        supabase.from("visits").select("*").eq("student_id", id).maybeSingle(),
-      ]);
-      setStudent(sRes.data);
-      setVisit(vRes.data);
-      setLoading(false);
-    }
-    if (id) load();
+  const load = useCallback(async () => {
+    const [sRes, vRes] = await Promise.all([
+      supabase.from("students").select("*").eq("id", id).single(),
+      supabase.from("visits").select("*").eq("student_id", id).maybeSingle(),
+    ]);
+    setStudent(sRes.data);
+    setVisit(vRes.data);
+    setLoading(false);
   }, [id, supabase]);
+
+  useEffect(() => { if (id) load(); }, [id, load]);
+  useAutoRefresh(load);
 
   if (loading) {
     return (
